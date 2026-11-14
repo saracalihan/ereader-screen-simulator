@@ -1,0 +1,38 @@
+{
+  "fb": {
+    "id": "hwtcon",
+    "xres": 1072, "yres": 1448,
+    "xres_virtual": 1072, "yres_virtual": 1448,
+    "bits_per_pixel": 32,
+    "grayscale": 0,
+    "line_length": 4288,
+    "smem_len": 6243328,
+    "rotate": 3,
+    "red":    {"offset": 0,  "length": 8},
+    "green":  {"offset": 8,  "length": 8},
+    "blue":   {"offset": 16, "length": 8},
+    "transp": {"offset": 24, "length": 8}
+  },
+  "devices": [
+    {
+      "name": "cyttsp5_mt",
+      "path": "event1",
+      "props": ["INPUT_PROP_DIRECT"],
+      "keys": ["BTN_TOUCH", "BTN_TOOL_FINGER", "BTN_TOOL_PEN", "KEY_POWER"],
+      "abs": {
+        "ABS_X":              {"min": 0, "max": 1447},
+        "ABS_Y":              {"min": 0, "max": 1071},
+        "ABS_PRESSURE":       {"min": 0, "max": 1024},
+        "ABS_MT_POSITION_X":  {"min": 0, "max": 1447},
+        "ABS_MT_POSITION_Y":  {"min": 0, "max": 1071},
+        "ABS_MT_TRACKING_ID": {"min": 0, "max": 1},
+        "ABS_MT_PRESSURE":    {"min": 0, "max": 1},
+        "ABS_MT_TOUCH_MAJOR": {"min": 0, "max": 0},
+        "ABS_MT_TOUCH_MINOR": {"min": 0, "max": 0},
+        "ABS_MT_ORIENTATION": {"min": 0, "max": 0},
+        "ABS_MT_TOOL_TYPE":   {"min": 0, "max": 0},
+        "ABS_MT_DISTANCE":    {"min": 0, "max": 0}
+      }
+    }
+  ]
+}
