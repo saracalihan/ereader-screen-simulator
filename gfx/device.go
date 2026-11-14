@@ -47,7 +47,7 @@ func ioctl(fd uintptr, req uintptr, arg unsafe.Pointer) error {
 }
 
 // openDev opens a real fb device and returns its info, mapping and refresh func.
-func openDev(f *os.File) (fbInfo, []byte, func(x, y, w, h int) error, error) {
+func openDev(f *os.File) (fbInfo, []byte, func(x, y, w, h int, wf Waveform, full bool) error, error) {
 	var zero fbInfo
 	var v varInfo
 	var x fixInfo
@@ -71,10 +71,14 @@ func openDev(f *os.File) (fbInfo, []byte, func(x, y, w, h int) error, error) {
 		return zero, nil, nil, fmt.Errorf("mmap: %w", err)
 	}
 	var marker uint32
-	refresh := func(x, y, w, h int) error {
+	refresh := func(x, y, w, h int, wf Waveform, full bool) error {
 		marker++
-		// HWTCON_SEND_UPDATE = _IOW('F', 0x2E, 36); GC16, full refresh
-		u := updateData{Top: uint32(y), Left: uint32(x), Width: uint32(w), Height: uint32(h), Waveform: 2, Mode: 1, Marker: marker}
+		// HWTCON_SEND_UPDATE = _IOW('F', 0x2E, 36); waveform and full/partial from the caller
+		var mode uint32
+		if full {
+			mode = 1
+		}
+		u := updateData{Top: uint32(y), Left: uint32(x), Width: uint32(w), Height: uint32(h), Waveform: uint32(wf), Mode: mode, Marker: marker}
 		req := uintptr(1<<30 | unsafe.Sizeof(u)<<16 | 'F'<<8 | 0x2E)
 		if err := ioctl(f.Fd(), req, unsafe.Pointer(&u)); err != nil {
 			return fmt.Errorf("HWTCON_SEND_UPDATE: %w", err)

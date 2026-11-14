@@ -44,8 +44,41 @@ type Device struct {
 	Abs   map[string]AbsRange `json:"abs"`
 }
 
+// EInk holds approximate panel timings.
+type EInk struct {
+	// DurationsMS maps waveform name to update time in milliseconds.
+	DurationsMS map[string]int `json:"durations_ms"`
+	// FullFlashMS is the extra time of a full update (black/white flash).
+	FullFlashMS int `json:"full_flash_ms"`
+}
+
+// Entry is one event of a template. Value is an integer or $id, $x, $y.
+type Entry struct {
+	Type  string `json:"type"`
+	Code  string `json:"code"`
+	Value string `json:"value"`
+}
+
+// Touch describes the Protocol A event sequence and the screen<->raw mapping.
+type Touch struct {
+	// Device-side raw->screen transform (the emulator applies its inverse).
+	SwapXY  bool `json:"swap_xy"`
+	MirrorX bool `json:"mirror_x"`
+	MirrorY bool `json:"mirror_y"`
+
+	MoveIntervalMS int `json:"move_interval_ms"`
+	HoldIntervalMS int `json:"hold_interval_ms"`
+
+	Press      []Entry `json:"press"`          // first group only, before contacts
+	Contact    []Entry `json:"contact"`        // per finger, every group
+	ReleasePer []Entry `json:"release_finger"` // per finger, in the release group
+	Release    []Entry `json:"release"`        // once, in the release group
+}
+
 type Profile struct {
+	Touch   Touch    `json:"touch"`
 	FB      FBInfo   `json:"fb"`
+	EInk    EInk     `json:"eink"`
 	Devices []Device `json:"devices"`
 }
 

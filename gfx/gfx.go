@@ -14,7 +14,7 @@ var (
 	info            fbInfo
 	buf             []byte
 	file            *os.File
-	refresh         func(x, y, w, h int) error // nil for the emulator (no refresh needed yet)
+	refresh         func(x, y, w, h int, wf Waveform, full bool) error // emulator: eink.sock client, nil if the emulator socket is absent
 	ro, go_, bo, ao int
 )
 
@@ -55,7 +55,7 @@ func Init(fbPath string) error {
 			f.Close()
 			return fmt.Errorf("mmap: %w", err)
 		}
-		refresh = nil
+		refresh = dialEmu(filepath.Join(filepath.Dir(fbPath), "eink.sock"))
 	}
 	if info.BPP != 32 {
 		return fmt.Errorf("only 32 bpp supported, got %d", info.BPP)
@@ -84,8 +84,33 @@ func GetScreenHeight() int { return info.YRes }
 // emulator's raw-fb window shows writes immediately).
 func EndDrawing() error { return RefreshRect(0, 0, info.XRes, info.YRes) }
 
-// RefreshRect refreshes one region of the panel.
-func RefreshRect(x, y, w, h int) error {
+// Waveform selects the e-ink update waveform (hwtcon values).
+type Waveform uint32
+
+const (
+	INIT  Waveform = 0 // full clear flash
+	DU    Waveform = 1 // fast black/white, for pen/line tracking
+	GC16  Waveform = 2 // best quality grays, slow
+	GL16  Waveform = 3 // text-friendly grays
+	GLR16 Waveform = 4 // REAGL
+	A2    Waveform = 6 // fastest, black/white only
+)
+
+var (
+	defWaveform = GC16
+	defFull     = true
+)
+
+// SetRefreshMode sets the waveform and full/partial mode used by EndDrawing
+// and RefreshRect. The default is GC16 with a full refresh.
+func SetRefreshMode(wf Waveform, full bool) { defWaveform, defFull = wf, full }
+
+// RefreshRect refreshes one region with the default refresh mode.
+func RefreshRect(x, y, w, h int) error { return RefreshRectEx(x, y, w, h, defWaveform, defFull) }
+
+// RefreshRectEx refreshes one region with an explicit waveform and mode.
+// It is a no-op on the emulator.
+func RefreshRectEx(x, y, w, h int, wf Waveform, full bool) error {
 	if refresh == nil {
 		return nil
 	}
@@ -93,7 +118,7 @@ func RefreshRect(x, y, w, h int) error {
 	if w <= 0 || h <= 0 {
 		return nil
 	}
-	return refresh(x, y, w, h)
+	return refresh(x, y, w, h, wf, full)
 }
 
 func clipRect(x, y, w, h int) (int, int, int, int) {

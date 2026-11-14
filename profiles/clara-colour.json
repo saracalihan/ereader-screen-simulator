@@ -1,37 +1,216 @@
 {
   "fb": {
     "id": "hwtcon",
-    "xres": 1072, "yres": 1448,
-    "xres_virtual": 1072, "yres_virtual": 1448,
+    "xres": 1072,
+    "yres": 1448,
+    "xres_virtual": 1072,
+    "yres_virtual": 1448,
     "bits_per_pixel": 32,
     "grayscale": 0,
     "line_length": 4288,
     "smem_len": 6243328,
     "rotate": 3,
-    "red":    {"offset": 0,  "length": 8},
-    "green":  {"offset": 8,  "length": 8},
-    "blue":   {"offset": 16, "length": 8},
-    "transp": {"offset": 24, "length": 8}
+    "red": {
+      "offset": 0,
+      "length": 8
+    },
+    "green": {
+      "offset": 8,
+      "length": 8
+    },
+    "blue": {
+      "offset": 16,
+      "length": 8
+    },
+    "transp": {
+      "offset": 24,
+      "length": 8
+    }
+  },
+  "eink": {
+    "durations_ms": {
+      "INIT": 1000,
+      "DU": 260,
+      "GC16": 450,
+      "GL16": 450,
+      "A2": 120,
+      "GLR16": 450,
+      "GLD16": 450
+    },
+    "full_flash_ms": 300
+  },
+  "touch": {
+    "swap_xy": true,
+    "mirror_x": true,
+    "mirror_y": false,
+    "move_interval_ms": 13,
+    "hold_interval_ms": 40,
+    "press": [
+      {
+        "type": "EV_KEY",
+        "code": "BTN_TOOL_FINGER",
+        "value": "1"
+      },
+      {
+        "type": "EV_KEY",
+        "code": "BTN_TOUCH",
+        "value": "1"
+      }
+    ],
+    "contact": [
+      {
+        "type": "EV_ABS",
+        "code": "ABS_MT_TRACKING_ID",
+        "value": "$id"
+      },
+      {
+        "type": "EV_ABS",
+        "code": "ABS_MT_DISTANCE",
+        "value": "0"
+      },
+      {
+        "type": "EV_ABS",
+        "code": "ABS_MT_POSITION_X",
+        "value": "$x"
+      },
+      {
+        "type": "EV_ABS",
+        "code": "ABS_MT_POSITION_Y",
+        "value": "$y"
+      },
+      {
+        "type": "EV_ABS",
+        "code": "ABS_MT_PRESSURE",
+        "value": "1"
+      },
+      {
+        "type": "EV_ABS",
+        "code": "ABS_X",
+        "value": "$x"
+      },
+      {
+        "type": "EV_ABS",
+        "code": "ABS_Y",
+        "value": "$y"
+      },
+      {
+        "type": "EV_ABS",
+        "code": "ABS_PRESSURE",
+        "value": "1024"
+      },
+      {
+        "type": "EV_ABS",
+        "code": "ABS_MT_TOUCH_MAJOR",
+        "value": "0"
+      },
+      {
+        "type": "EV_ABS",
+        "code": "ABS_MT_TOUCH_MINOR",
+        "value": "0"
+      },
+      {
+        "type": "EV_ABS",
+        "code": "ABS_MT_ORIENTATION",
+        "value": "0"
+      },
+      {
+        "type": "EV_SYN",
+        "code": "SYN_MT_REPORT",
+        "value": "0"
+      }
+    ],
+    "release_finger": [
+      {
+        "type": "EV_ABS",
+        "code": "ABS_X",
+        "value": "$x"
+      },
+      {
+        "type": "EV_ABS",
+        "code": "ABS_Y",
+        "value": "$y"
+      },
+      {
+        "type": "EV_ABS",
+        "code": "ABS_PRESSURE",
+        "value": "0"
+      }
+    ],
+    "release": [
+      {
+        "type": "EV_KEY",
+        "code": "BTN_TOUCH",
+        "value": "0"
+      },
+      {
+        "type": "EV_KEY",
+        "code": "BTN_TOOL_FINGER",
+        "value": "0"
+      }
+    ]
   },
   "devices": [
     {
       "name": "cyttsp5_mt",
       "path": "event1",
-      "props": ["INPUT_PROP_DIRECT"],
-      "keys": ["BTN_TOUCH", "BTN_TOOL_FINGER", "BTN_TOOL_PEN", "KEY_POWER"],
+      "props": [
+        "INPUT_PROP_DIRECT"
+      ],
+      "keys": [
+        "BTN_TOUCH",
+        "BTN_TOOL_FINGER",
+        "BTN_TOOL_PEN",
+        "KEY_POWER"
+      ],
       "abs": {
-        "ABS_X":              {"min": 0, "max": 1447},
-        "ABS_Y":              {"min": 0, "max": 1071},
-        "ABS_PRESSURE":       {"min": 0, "max": 1024},
-        "ABS_MT_POSITION_X":  {"min": 0, "max": 1447},
-        "ABS_MT_POSITION_Y":  {"min": 0, "max": 1071},
-        "ABS_MT_TRACKING_ID": {"min": 0, "max": 1},
-        "ABS_MT_PRESSURE":    {"min": 0, "max": 1},
-        "ABS_MT_TOUCH_MAJOR": {"min": 0, "max": 0},
-        "ABS_MT_TOUCH_MINOR": {"min": 0, "max": 0},
-        "ABS_MT_ORIENTATION": {"min": 0, "max": 0},
-        "ABS_MT_TOOL_TYPE":   {"min": 0, "max": 0},
-        "ABS_MT_DISTANCE":    {"min": 0, "max": 0}
+        "ABS_X": {
+          "min": 0,
+          "max": 1447
+        },
+        "ABS_Y": {
+          "min": 0,
+          "max": 1071
+        },
+        "ABS_PRESSURE": {
+          "min": 0,
+          "max": 1024
+        },
+        "ABS_MT_POSITION_X": {
+          "min": 0,
+          "max": 1447
+        },
+        "ABS_MT_POSITION_Y": {
+          "min": 0,
+          "max": 1071
+        },
+        "ABS_MT_TRACKING_ID": {
+          "min": 0,
+          "max": 1
+        },
+        "ABS_MT_PRESSURE": {
+          "min": 0,
+          "max": 1
+        },
+        "ABS_MT_TOUCH_MAJOR": {
+          "min": 0,
+          "max": 0
+        },
+        "ABS_MT_TOUCH_MINOR": {
+          "min": 0,
+          "max": 0
+        },
+        "ABS_MT_ORIENTATION": {
+          "min": 0,
+          "max": 0
+        },
+        "ABS_MT_TOOL_TYPE": {
+          "min": 0,
+          "max": 0
+        },
+        "ABS_MT_DISTANCE": {
+          "min": 0,
+          "max": 0
+        }
       }
     }
   ]
