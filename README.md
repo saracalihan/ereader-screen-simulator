@@ -1,5 +1,7 @@
 # ereader-screen-simulator
 
+![screenshot](./images/screenshot.jpeg)
+
 A screen and touch emulator for Kobo e-readers, written in Go. It lets you develop on your computer instead of connecting to the device over SSH for every test. It also ships a small drawing/touch library (`gfx`) so the same application code runs both in the emulator and on the device.
 
 The current target is the **Kobo Clara Colour** (MediaTek `hwtcon`, 32-bit ARM, Kaleido 3). Device details live in a profile file: [profiles/clara-colour.json](profiles/clara-colour.json).
