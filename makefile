@@ -30,6 +30,7 @@ check_example:
 build_example: check_example
 	@mkdir -p ${BIN_DIR}
 	${KOBO_FLAGS} go build -o ${BIN_DIR}/${EXAMPLE} ./${EXAMPLE_DIR}/${EXAMPLE}
+	chmod +x ${BIN_DIR}/${EXAMPLE}
 
 serve_example:
 	python3 -m http.server ${PORT} -d ${BIN_DIR}

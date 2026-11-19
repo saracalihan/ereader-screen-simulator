@@ -14,6 +14,8 @@ var (
 	info            fbInfo
 	buf             []byte
 	file            *os.File
+	fbDir           string
+	fbIsDev         bool
 	refresh         func(x, y, w, h int, wf Waveform, full bool) error // emulator: eink.sock client, nil if the emulator socket is absent
 	ro, go_, bo, ao int
 )
@@ -62,11 +64,13 @@ func Init(fbPath string) error {
 	}
 	ro, go_, bo, ao = info.Red.Offset/8, info.Green.Offset/8, info.Blue.Offset/8, info.Transp.Offset/8
 	file = f
+	fbDir, fbIsDev = filepath.Dir(fbPath), st.Mode()&os.ModeCharDevice != 0
 	return nil
 }
 
 // Close unmaps the framebuffer.
 func Close() {
+	CloseTouch()
 	if buf != nil {
 		syscall.Munmap(buf)
 		buf = nil
